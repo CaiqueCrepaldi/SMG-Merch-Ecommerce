@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMG Merch - Painel Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://media.discordapp.net/attachments/700839284235698336/1489656059592310824/637072335_1268175738604531_5945508637922724854_n.png?ex=69d135d1&is=69cfe451&hm=4dac001bc929184b158539e4ead01c568597de8d14a98123bed85ee7ecaad730&=&format=webp&quality=lossless" alt="SMG Merch Logo" class="logo-img">
+                <h1>SMG MERCH</h1>
+            </div>
+            <nav class="nav-buttons">
+                <button id="lojaBtn" class="btn-secundario" onclick="window.location.href='loja.html'">Loja</button>
+                <button id="logoutBtn" class="btn-secundario">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-container">
+            <!-- Abas Admin -->
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" data-tab="produtos">Produtos</button>
+                <button class="admin-tab-btn" data-tab="pedidos">Pedidos</button>
+                <button class="admin-tab-btn" data-tab="usuarios">Usuários</button>
+            </div>
+
+            <!-- Aba Produtos -->
+            <section id="produtosTab" class="admin-tab-content active">
+                <h2>Gerenciar Produtos</h2>
+                
+                <!-- Form Novo Produto -->
+                <div class="form-container">
+                    <h3>Novo Produto</h3>
+                    <form id="novoProdutoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="produtoNome">Nome</label>
+                                <input type="text" id="produtoNome" placeholder="Nome do produto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="produtoPreco">Preço</label>
+                                <input type="number" id="produtoPreco" placeholder="0.00" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="produtoImg">URL da Imagem</label>
+                            <input type="text" id="produtoImg" placeholder="https://exemplo.com/imagem.jpg">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tamanhoPUnidade">Tamanho P - Quantidade</label>
+                                <input type="number" id="tamanhoPUnidade" placeholder="0" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="tamanhoMUnidade">Tamanho M - Quantidade</label>
+                                <input type="number" id="tamanhoMUnidade" placeholder="0" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="tamanhoGUnidade">Tamanho G - Quantidade</label>
+                                <input type="number" id="tamanhoGUnidade" placeholder="0" value="0" min="0">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Criar Produto</button>
+                        <p class="form-message" id="novoProdutoMessage"></p>
+                    </form>
+                </div>
+
+                <!-- Lista Produtos -->
+                <div class="tabela-container">
+                    <h3>Produtos Cadastrados</h3>
+                    <table id="produtosTabela" class="tabela">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Preço</th>
+                                <th>Estoque P</th>
+                                <th>Estoque M</th>
+                                <th>Estoque G</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Produtos serão carregados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Aba Pedidos -->
+            <section id="pedidosTab" class="admin-tab-content">
+                <h2>Gerenciar Pedidos</h2>
+                <div class="tabela-container">
+                    <table id="pedidosTabela" class="tabela">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Total</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Pedidos serão carregados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Aba Usuários -->
+            <section id="usuariosTab" class="admin-tab-content">
+                <h2>Gerenciar Usuários</h2>
+                
+                <!-- Lista Usuários -->
+                <div class="tabela-container">
+                    <h3>Usuários Cadastrados</h3>
+                    <table id="usuariosTabela" class="tabela">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>CPF</th>
+                                <th>Data Criação</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Usuários serão carregados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Editar Produto -->
+    <div id="editarProdutoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Produto</h2>
+                <button class="btn-close">&times;</button>
+            </div>
+            <form id="editarProdutoForm">
+                <input type="hidden" id="editarProdutoId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editarProdutoNome">Nome</label>
+                        <input type="text" id="editarProdutoNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editarProdutoPreco">Preço</label>
+                        <input type="number" id="editarProdutoPreco" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editarProdutoImg">URL da Imagem</label>
+                    <input type="text" id="editarProdutoImg">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editarTamanhoPUnidade">Tamanho P</label>
+                        <input type="number" id="editarTamanhoPUnidade" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarTamanhoMUnidade">Tamanho M</label>
+                        <input type="number" id="editarTamanhoMUnidade" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="editarTamanhoGUnidade">Tamanho G</label>
+                        <input type="number" id="editarTamanhoGUnidade" min="0">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detalhes Pedido -->
+    <div id="detalhesPedidoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes do Pedido</h2>
+                <button class="btn-close">&times;</button>
+            </div>
+            <div id="detalhesPedido">
+                <!-- Detalhes serão carregados aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Usuário -->
+    <div id="editarUsuarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Usuário</h2>
+                <button class="btn-close">&times;</button>
+            </div>
+            <form id="editarUsuarioForm">
+                <input type="hidden" id="editarUsuarioId">
+                <div class="form-group">
+                    <label for="editarUsuarioNome">Usuário</label>
+                    <input type="text" id="editarUsuarioNome" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="editarUsuarioEmail">Email</label>
+                    <input type="email" id="editarUsuarioEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editarUsuarioCPF">CPF</label>
+                    <input type="text" id="editarUsuarioCPF">
+                </div>
+                <div class="form-group">
+                    <label for="editarUsuarioSenha">Nova Senha (deixe em branco para não alterar)</label>
+                    <input type="password" id="editarUsuarioSenha" placeholder="Mínimo 6 caracteres">
+                </div>
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+                <p class="form-message" id="editarUsuarioMessage"></p>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 SMG Merch - Painel Administrativo</p>
+    </footer>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

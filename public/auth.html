@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMG Merch - Autenticação</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="logo">
+                <img src="https://media.discordapp.net/attachments/700839284235698336/1489656059592310824/637072335_1268175738604531_5945508637922724854_n.png?ex=69d135d1&is=69cfe451&hm=4dac001bc929184b158539e4ead01c568597de8d14a98123bed85ee7ecaad730&=&format=webp&quality=lossless" alt="SMG Merch Logo" class="logo-img">
+                <div>
+                    <h1>SMG MERCH</h1>
+                    <p>Sua loja de merchandising</p>
+                </div>
+            </div>
+
+            <!-- Abas de Login/Registro/Recuperação -->
+            <div class="auth-tabs">
+                <button id="loginTab" class="tab-btn active">Login</button>
+                <button id="registroTab" class="tab-btn">Registrar</button>
+                <button id="recuperacaoTab" class="tab-btn">Esqueci Senha</button>
+            </div>
+
+            <!-- Form Login -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginUsuario">Usuário</label>
+                    <input type="text" id="loginUsuario" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginSenha">Senha</label>
+                    <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit" class="btn-primary">Entrar</button>
+                <p class="form-message" id="loginMessage"></p>
+            </form>
+
+            <!-- Form Registro -->
+            <form id="registroForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registroUsuario">Usuário</label>
+                    <input type="text" id="registroUsuario" placeholder="Escolha um usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="registroEmail">Email</label>
+                    <input type="email" id="registroEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="registroCPF">CPF (opcional)</label>
+                    <input type="text" id="registroCPF" placeholder="000.000.000-00">
+                </div>
+                <div class="form-group">
+                    <label for="registroSenha">Senha</label>
+                    <input type="password" id="registroSenha" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <button type="submit" class="btn-primary">Registrar</button>
+                <p class="form-message" id="registroMessage"></p>
+            </form>
+
+            <!-- Form Recuperação de Senha -->
+            <form id="recuperacaoForm" class="auth-form">
+                <div class="form-group">
+                    <label for="recuperacaoUsuario">Usuário</label>
+                    <input type="text" id="recuperacaoUsuario" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="recuperacaoEmail">Email</label>
+                    <input type="email" id="recuperacaoEmail" placeholder="seu@email.com" required>
+                </div>
+                <button type="submit" class="btn-primary">Solicitar Recuperação</button>
+                <p class="form-message" id="recuperacaoMessage"></p>
+                <hr style="margin: 15px 0; opacity: 0.3;">
+                <h4 style="font-size: 14px; margin-bottom: 10px;">Resetar Senha</h4>
+                <div class="form-group">
+                    <label for="resetarSenha">Nova Senha</label>
+                    <input type="password" id="resetarSenha" placeholder="Mínimo 6 caracteres">
+                </div>
+                <button type="button" class="btn-secondary" id="btnResetarSenha" style="width: 100%; margin-top: 10px;">Resetar Senha</button>
+                <p class="form-message" id="resetarMessage"></p>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .btn-secondary {
+            background: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-secondary:hover {
+            background: #777;
+        }
+    </style>
+
+    <script src="/js/auth.js"></script>
+</body>
+</html>

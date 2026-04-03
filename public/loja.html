@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMG Merch - Loja Online</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://media.discordapp.net/attachments/700839284235698336/1489656059592310824/637072335_1268175738604531_5945508637922724854_n.png?ex=69d135d1&is=69cfe451&hm=4dac001bc929184b158539e4ead01c568597de8d14a98123bed85ee7ecaad730&=&format=webp&quality=lossless" alt="SMG Merch Logo" class="logo-img">
+                <h1>SMG MERCH</h1>
+            </div>
+            <nav class="nav-buttons">
+                <button id="perfilBtn" class="btn-secundario" onclick="window.location.href='cliente.html'">Meu Perfil</button>
+                <button id="carrinhoBtn" class="btn-carrinho">
+                    🛒 Carrinho <span id="carrinhoCount">0</span>
+                </button>
+                <button id="pedidosBtn" class="btn-secundario">Meus Pedidos</button>
+                <button id="logoutBtn" class="btn-secundario">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Seção de Produtos -->
+        <section id="lojaSection" class="loja-section">
+            <h2>Nossos Produtos</h2>
+            <div id="produtos" class="grid-produtos">
+                <!-- Produtos serão carregados aqui -->
+            </div>
+        </section>
+
+        <!-- Modal do Carrinho -->
+        <div id="carrinhoModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Carrinho de Compras</h2>
+                    <button class="btn-close">&times;</button>
+                </div>
+                <div id="carrinhoItens" class="carrinho-itens">
+                    <!-- Itens do carrinho serão carregados aqui -->
+                </div>
+                <div class="carrinho-resumo">
+                    <p>Total: R$ <span id="carrinhoTotal">0.00</span></p>
+                    <button id="calcularFreteBtn" class="btn-secundario">Calcular Frete</button>
+                    <button id="finalizarCompraBtn" class="btn-primary">Finalizar Compra via WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Pedidos -->
+        <div id="pedidosModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Meus Pedidos</h2>
+                    <button class="btn-close">&times;</button>
+                </div>
+                <div id="pedidosList" class="pedidos-list">
+                    <!-- Pedidos serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Detalhes do Pedido -->
+        <div id="pedidoDetalheModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Detalhes do Pedido</h2>
+                    <button class="btn-close">&times;</button>
+                </div>
+                <div id="pedidoDetalhe" class="pedido-detalhe">
+                    <!-- Detalhes do pedido serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Calculo de Frete -->
+        <div id="freteModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Calcular Frete Correios</h2>
+                    <button class="btn-close">&times;</button>
+                </div>
+                <div class="frete-container">
+                    <div class="form-group">
+                        <label for="cepFrete">CEP de Entrega:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="cepFrete" placeholder="00000-000" maxlength="9" style="flex: 1;">
+                            <button id="calcularFreteSubmit" class="btn-primary">Calcular</button>
+                        </div>
+                    </div>
+                    <div id="resultadoFrete" style="display:none; margin-top: 20px; padding: 15px; background: var(--secondary-gray); border-radius: 5px;">
+                        <h4 style="margin-bottom: 15px; color: var(--primary-black);">Opções de Entrega Disponíveis:</h4>
+                        <div id="opcoesFrete"></div>
+                        <small style="display: block; margin-top: 15px; color: var(--text-light); font-style: italic;">
+                            💡 Clique em uma opção para selecionar e prosseguir com a compra
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 SMG Merch. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="/js/loja.js"></script>
+</body>
+</html>

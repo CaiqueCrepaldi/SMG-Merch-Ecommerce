@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMG Merch - Moda Underground</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+        }
+        
+        .hero {
+            background: #000;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #aaa;
+        }
+        
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            padding: 15px 40px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+            transition: 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #333;
+        }
+        
+        .about-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .about-section h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .about-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ddd;
+        }
+        
+        .values {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .value-box {
+            background: #111;
+            padding: 30px;
+            border-left: 4px solid #333;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .value-box h4 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .values {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://media.discordapp.net/attachments/700839284235698336/1489656059592310824/637072335_1268175738604531_5945508637922724854_n.png?ex=69d135d1&is=69cfe451&hm=4dac001bc929184b158539e4ead01c568597de8d14a98123bed85ee7ecaad730&=&format=webp&quality=lossless" alt="SMG Merch Logo" class="logo-img">
+                <h1>SMG MERCH</h1>
+            </div>
+            <nav class="nav-buttons">
+                <button id="lojaBtn" class="btn-secundario" onclick="window.location.href='loja.html'">Loja</button>
+                <button id="loginBtn" class="btn-secundario" onclick="window.location.href='auth.html'">Login</button>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h2>SMG MERCH</h2>
+        <p>Moda Underground para Todos</p>
+        <button class="btn-primary" type="button" onclick="window.location.href='loja.html'">Explorar Coleção</button>
+    </section>
+    
+    <section class="about-section" id="sobre">
+        <h3>Quem Somos</h3>
+        
+        <div class="about-grid">
+            <div>
+                <h4 style="color: var(--primary-white); font-size: 22px; margin-bottom: 15px;">Nossa História</h4>
+                <p class="about-text">
+                    SMG Merch nasceu da paixão pela cultura underground e pela vontade de trazer peças autênticas para todos. 
+                    Somos mais que uma marca de roupa - somos um movimento que conecta gerações diferentes através da moda com propósito.
+                </p>
+            </div>
+            <div>
+                <h4 style="color: var(--primary-white); font-size: 22px; margin-bottom: 15px;">Nossa Missão</h4>
+                <p class="about-text">
+                    Democratizar a moda de qualidade, trazendo estilo underground para a rua com peças criativas, 
+                    autênticas e acessíveis. Acreditamos que moda é expressão e liberdade, sem limites sociais.
+                </p>
+            </div>
+        </div>
+        
+        <h4 style="color: var(--primary-white); font-size: 20px; margin-bottom: 20px; text-align: center;">Nossos Valores</h4>
+        <div class="values">
+            <div class="value-box">
+                <h4>Autenticidade</h4>
+                <p>Cada peça conta uma história real e genuína</p>
+            </div>
+            <div class="value-box">
+                <h4>Qualidade</h4>
+                <p>Tecidos premium com conforto garantido</p>
+            </div>
+            <div class="value-box">
+                <h4>Inclusão</h4>
+                <p>Moda para todos, sem julgamentos ou barreiras</p>
+            </div>
+        </div>
+        
+        <div style="background: #1a1a1a; padding: 40px; border-radius: 5px; margin-top: 40px; text-align: center;">
+            <h4 style="color: var(--primary-white); font-size: 20px; margin-bottom: 20px; text-align: center;">Por que escolher SMG Merch?</h4>
+            <p class="about-text">
+                Nascemos na periferia, crescemos com a comunidade. Entendemos que moda underground é muito mais que roupas - 
+                é identidade, é voz, é expressão. Por isso cada coleção é desenhada pensando em quem realmente vive a rua, 
+                mas sem deixar ninguém de fora. Venha ser parte do movimento! 🤍
+            </p>
+        </div>
+    </section>
+</body>
+</html>
