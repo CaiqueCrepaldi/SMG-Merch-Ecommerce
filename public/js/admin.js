@@ -146,31 +146,43 @@ function configurarEventosAdmin() {
     });
 
     // Form novo produto
-    document.getElementById('novoProdutoForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await criarProduto();
-    });
+    const novoProdutoForm = document.getElementById('novoProdutoForm');
+    if (novoProdutoForm) {
+        novoProdutoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await criarProduto();
+        });
+    }
 
     // Form editar produto
-    document.getElementById('editarProdutoForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await salvarEdicaoProduto();
-    });
+    const editarProdutoForm = document.getElementById('editarProdutoForm');
+    if (editarProdutoForm) {
+        editarProdutoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await salvarEdicaoProduto();
+        });
+    }
 
     // Form editar usuário
-    document.getElementById('editarUsuarioForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await salvarEdicaoUsuario();
-    });
+    const editarUsuarioForm = document.getElementById('editarUsuarioForm');
+    if (editarUsuarioForm) {
+        editarUsuarioForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await salvarEdicaoUsuario();
+        });
+    }
 
     // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await fetch(`${API_URL}/usuarios/logout`, {
-            method: 'POST',
-            credentials: 'include'
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            await fetch(`${API_URL}/usuarios/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            window.location.href = '/';
         });
-        window.location.href = '/';
-    });
+    }
 
     // Fechar modais
     document.querySelectorAll('.btn-close').forEach(btn => {
@@ -201,8 +213,13 @@ async function criarProduto() {
     const messageEl = document.getElementById('novoProdutoMessage');
 
     if (!nome || !preco) {
-        messageEl.textContent = 'Nome e preço obrigatórios';
-        messageEl.className = 'form-message error';
+        const mensagem = 'Nome e preço obrigatórios';
+        if (messageEl) {
+            messageEl.textContent = mensagem;
+            messageEl.className = 'form-message error';
+        } else {
+            alert(mensagem);
+        }
         return;
     }
 
@@ -224,24 +241,42 @@ async function criarProduto() {
         });
 
         const data = await response.json();
+        
+        console.log('Response Status:', response.status);
+        console.log('Response OK:', response.ok);
+        console.log('Response Data:', data);
 
         if (!response.ok) {
-            throw new Error(data.error);
+            throw new Error(data.error || 'Erro ao criar produto');
         }
 
-        messageEl.textContent = 'Produto criado com sucesso!';
-        messageEl.className = 'form-message success';
+        console.log('Produto criado com sucesso, recarregando...');
+
+        if (messageEl) {
+            messageEl.textContent = 'Produto criado com sucesso!';
+            messageEl.className = 'form-message success';
+        } else {
+            alert('Produto criado com sucesso!');
+        }
 
         document.getElementById('novoProdutoForm').reset();
         await carregarProdutosAdmin();
         atualizarEstatisticas();
 
-        setTimeout(() => {
-            messageEl.className = 'form-message';
-        }, 3000);
+        if (messageEl) {
+            setTimeout(() => {
+                messageEl.className = 'form-message';
+            }, 3000);
+        }
     } catch (error) {
-        messageEl.textContent = 'Erro: ' + error.message;
-        messageEl.className = 'form-message error';
+        console.error('Erro na criação:', error);
+        const msg = 'Erro: ' + error.message;
+        if (messageEl) {
+            messageEl.textContent = msg;
+            messageEl.className = 'form-message error';
+        } else {
+            alert(msg);
+        }
     }
 }
 
