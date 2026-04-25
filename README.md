@@ -205,7 +205,7 @@ Desenvolvido com ❤️ para SMG Merch
 
 ## 📄 Licença
 
-MIT License - 2024
+Caique Crepaldi - 2026
 
 ---
 
