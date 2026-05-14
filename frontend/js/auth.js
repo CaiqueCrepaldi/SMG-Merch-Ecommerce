@@ -2,7 +2,7 @@
 // Sistema de Autenticação
 // ==========================================
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = window.location.origin + '/api';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Verificar se já está autenticado (apenas para redirecionar se for admin)
