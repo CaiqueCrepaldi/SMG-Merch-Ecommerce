@@ -227,102 +227,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     recuperacaoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const usuario = document.getElementById('recuperacaoUsuario').value.trim();
         const email = document.getElementById('recuperacaoEmail').value.trim();
         const messageEl = document.getElementById('recuperacaoMessage');
 
-        if (!usuario || !email) {
+        if (!email) {
             messageEl.className = 'form-message error';
-            messageEl.textContent = '❌ Erro: Preencha usuário e email!';
+            messageEl.textContent = '❌ Preencha o email!';
             messageEl.style.display = 'block';
             return;
         }
 
         try {
             messageEl.className = 'form-message';
-            messageEl.textContent = '⏳ Verificando dados...';
+            messageEl.textContent = '⏳ Enviando link...';
             messageEl.style.color = '#3498db';
             messageEl.style.display = 'block';
 
             const response = await fetch(`${API_URL}/usuarios/recuperar-senha`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, email })
+                body: JSON.stringify({ email })
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                messageEl.className = 'form-message error';
-                messageEl.textContent = '🔍 Erro: Usuário ou email não encontrado!';
-                messageEl.style.display = 'block';
-                return;
-            }
-
             messageEl.className = 'form-message success';
-            messageEl.textContent = '✅ Verificado! Agora preencha sua nova senha abaixo.';
+            messageEl.textContent = '✅ Se o email estiver cadastrado, você receberá um link em instantes. Verifique sua caixa de entrada.';
             messageEl.style.display = 'block';
+            recuperacaoForm.reset();
         } catch (error) {
             messageEl.className = 'form-message error';
-            messageEl.textContent = '⚠️ Erro: Falha ao verificar. Tente novamente!';
-            messageEl.style.display = 'block';
-        }
-    });
-
-    // Resetar Senha
-    document.getElementById('btnResetarSenha').addEventListener('click', async () => {
-        const usuario = document.getElementById('recuperacaoUsuario').value.trim();
-        const email = document.getElementById('recuperacaoEmail').value.trim();
-        const novaSenha = document.getElementById('resetarSenha').value.trim();
-        const messageEl = document.getElementById('resetarMessage');
-
-        if (!usuario || !email || !novaSenha) {
-            messageEl.className = 'form-message error';
-            messageEl.textContent = '❌ Erro: Preencha todos os campos!';
-            messageEl.style.display = 'block';
-            return;
-        }
-
-        if (novaSenha.length < 6) {
-            messageEl.className = 'form-message error';
-            messageEl.textContent = '🔐 Erro: Senha deve ter no mínimo 6 caracteres!';
-            messageEl.style.display = 'block';
-            return;
-        }
-
-        try {
-            messageEl.className = 'form-message';
-            messageEl.textContent = '⏳ Atualizando senha...';
-            messageEl.style.color = '#3498db';
-            messageEl.style.display = 'block';
-
-            const response = await fetch(`${API_URL}/usuarios/resetar-senha`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, email, novaSenha })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                messageEl.className = 'form-message error';
-                messageEl.textContent = '❌ Erro: Falha ao resetar senha. Tente novamente!';
-                messageEl.style.display = 'block';
-                return;
-            }
-
-            messageEl.className = 'form-message success';
-            messageEl.textContent = '✅ Senha alterada com sucesso! Faça login com sua nova senha.';
-            messageEl.style.display = 'block';
-
-            setTimeout(() => {
-                recuperacaoForm.reset();
-                document.getElementById('resetarSenha').value = '';
-                loginTab.click();
-            }, 1500);
-        } catch (error) {
-            messageEl.className = 'form-message error';
-            messageEl.textContent = '⚠️ Erro: Falha ao conectar ao servidor!';
+            messageEl.textContent = '⚠️ Erro ao conectar ao servidor. Tente novamente!';
             messageEl.style.display = 'block';
         }
     });

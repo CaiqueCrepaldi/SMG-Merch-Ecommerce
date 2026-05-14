@@ -1,6 +1,7 @@
 import pool from '../database';
 import { RowDataPacket, OkPacket } from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { Usuario } from '../types';
 
 // ...existing code...
@@ -183,27 +184,55 @@ export class UsuarioController {
     }
   }
 
-  // Recuperar senha via email (esqueci a senha)
-  static async solicitarRecuperacao(usuario: string, email: string) {
+  // Gerar token de recuperação de senha e salvar no banco
+  static async gerarTokenRecuperacao(email: string) {
     const connection = await pool.getConnection();
     try {
       const [rows] = await connection.query<RowDataPacket[]>(
-        'SELECT id, usuario, email FROM usuarios WHERE usuario = ? AND email = ?',
-        [usuario, email]
+        'SELECT id, usuario, email FROM usuarios WHERE email = ?',
+        [email]
+      );
+
+      if (rows.length === 0) return null;
+
+      const user = rows[0] as any;
+      const token = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+      // Remove tokens anteriores do mesmo usuário
+      await connection.query('DELETE FROM password_reset_tokens WHERE usuario_id = ?', [user.id]);
+
+      await connection.query(
+        'INSERT INTO password_reset_tokens (usuario_id, token, expires_at) VALUES (?, ?, ?)',
+        [user.id, token, expiresAt]
+      );
+
+      return { id: user.id, usuario: user.usuario, email: user.email, token };
+    } finally {
+      connection.release();
+    }
+  }
+
+  // Validar token e resetar senha
+  static async resetarSenhaComToken(token: string, novaSenha: string) {
+    const connection = await pool.getConnection();
+    try {
+      const [rows] = await connection.query<RowDataPacket[]>(
+        'SELECT * FROM password_reset_tokens WHERE token = ? AND expires_at > NOW()',
+        [token]
       );
 
       if (rows.length === 0) {
-        return null;
+        throw new Error('Token inválido ou expirado');
       }
 
-      // Gerar código de recuperação (token simples)
-      const codigoRecuperacao = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      
-      return {
-        id: (rows[0] as any).id,
-        usuario: (rows[0] as any).usuario,
-        codigoRecuperacao: codigoRecuperacao
-      };
+      const usuarioId = (rows[0] as any).usuario_id;
+      const novaHash = await bcrypt.hash(novaSenha, 10);
+
+      await connection.query('UPDATE usuarios SET senha = ? WHERE id = ?', [novaHash, usuarioId]);
+      await connection.query('DELETE FROM password_reset_tokens WHERE token = ?', [token]);
+
+      return true;
     } finally {
       connection.release();
     }

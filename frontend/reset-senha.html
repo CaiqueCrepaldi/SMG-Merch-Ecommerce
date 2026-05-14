@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMG Merch - Redefinir Senha</title>
+    <link rel="icon" href="/img/logo.png" type="image/png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="logo">
+                <img src="/img/logo.png" alt="SMG Merch Logo" class="logo-img">
+                <div>
+                    <h1>SMG MERCH</h1>
+                    <p>Redefinição de senha</p>
+                </div>
+            </div>
+
+            <div id="loadingState" style="text-align:center; padding: 30px 0;">
+                <p style="color: #555;">Validando link...</p>
+            </div>
+
+            <div id="formState" style="display:none;">
+                <h2 style="font-size: 20px; margin-bottom: 20px; color: #111; text-align: center;">Criar Nova Senha</h2>
+                <form id="resetForm">
+                    <div class="form-group">
+                        <label for="novaSenha">Nova Senha</label>
+                        <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmarSenha">Confirmar Nova Senha</label>
+                        <input type="password" id="confirmarSenha" placeholder="Digite a senha novamente" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Salvar Nova Senha</button>
+                    <p class="form-message" id="resetMessage"></p>
+                </form>
+            </div>
+
+            <div id="errorState" style="display:none; text-align:center; padding: 20px 0;">
+                <p style="font-size: 40px; margin-bottom: 10px;">⚠️</p>
+                <p id="errorText" style="color: #c0392b; font-weight: bold; margin-bottom: 20px;">Link inválido ou expirado.</p>
+                <p style="color: #555; font-size: 14px; margin-bottom: 25px;">Solicite um novo link de recuperação na tela de login.</p>
+                <a href="/auth" class="btn-primary" style="display:inline-block; text-decoration:none; padding: 12px 24px;">Voltar ao Login</a>
+            </div>
+
+            <div id="successState" style="display:none; text-align:center; padding: 20px 0;">
+                <p style="font-size: 40px; margin-bottom: 10px;">✅</p>
+                <p style="color: #27ae60; font-weight: bold; font-size: 18px; margin-bottom: 10px;">Senha redefinida com sucesso!</p>
+                <p style="color: #555; font-size: 14px; margin-bottom: 25px;">Redirecionando para o login...</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #111;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #111;
+        }
+        .form-message {
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        .form-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .form-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+    </style>
+
+    <script src="/js/reset-senha.js"></script>
+</body>
+</html>

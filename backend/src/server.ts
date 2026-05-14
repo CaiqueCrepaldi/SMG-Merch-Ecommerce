@@ -9,6 +9,7 @@ import produtoRoutes from './routes/produtoRoutes';
 import pedidoRoutes from './routes/pedidoRoutes';
 import freteRoutes from './routes/freteRoutes';
 import { limiter, loginLimiter } from './config/limiters';
+import pool from './database';
 
 dotenv.config();
 
@@ -90,8 +91,11 @@ app.get('/admin', (req, res) => {
 app.get('/cliente', (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/cliente.html'));
 });
-app.get('/loja', (req, res) => {
+app.get('/loja', (_req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/loja.html'));
+});
+app.get('/reset-senha', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/reset-senha.html'));
 });
 
 // Middleware de erro global
@@ -107,6 +111,29 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Rota não encontrada' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor SMG Merch rodando em http://localhost:${PORT}`);
+async function inicializarBanco() {
+  const conn = await pool.getConnection();
+  try {
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        usuario_id INT NOT NULL,
+        token VARCHAR(64) NOT NULL UNIQUE,
+        expires_at DATETIME NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+      )
+    `);
+    console.log('Tabela password_reset_tokens OK');
+  } catch (err) {
+    console.error('Erro ao criar tabela de tokens:', err);
+  } finally {
+    conn.release();
+  }
+}
+
+inicializarBanco().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Servidor SMG Merch rodando em http://localhost:${PORT}`);
+  });
 });

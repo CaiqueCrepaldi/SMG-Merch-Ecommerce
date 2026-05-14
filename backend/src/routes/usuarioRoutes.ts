@@ -1,6 +1,7 @@
 import { Response, Router } from 'express';
 import { UsuarioController } from '../controllers/usuarioController';
 import { AuthRequest, authMiddleware, adminMiddleware } from '../middleware/auth';
+import { enviarEmailRecuperacao } from '../services/emailService';
 
 const router = Router();
 
@@ -167,55 +168,51 @@ router.put('/perfil/atualizar', authMiddleware, async (req: AuthRequest, res: Re
   }
 });
 
-// Recuperação de senha - Solicitar
+// Recuperação de senha — envia email com link e token
 router.post('/recuperar-senha', async (req: any, res: Response) => {
   try {
-    const { usuario, email } = req.body;
+    const { email } = req.body;
 
-    if (!usuario || !email) {
-      return res.status(400).json({ error: 'Usuário e email obrigatórios' });
+    if (!email) {
+      return res.status(400).json({ error: 'Email obrigatório' });
     }
 
-    const recuperacao = await UsuarioController.solicitarRecuperacao(usuario, email);
+    const resultado = await UsuarioController.gerarTokenRecuperacao(email);
 
-    if (!recuperacao) {
-      return res.status(404).json({ error: 'Usuário ou email não encontrado' });
+    // Responde sempre com sucesso para não revelar se o email existe
+    if (resultado) {
+      try {
+        await enviarEmailRecuperacao(resultado.email, resultado.usuario, resultado.token);
+      } catch (emailErr) {
+        console.error('Erro ao enviar email de recuperação:', emailErr);
+      }
     }
 
-    // Em produção: enviar email com link contendo o token
-    // O código de recuperação não deve ser retornado na resposta
-    res.json({
-      mensagem: 'Se o usuário e email existem, instruções foram enviadas'
-    });
+    res.json({ mensagem: 'Se o email existir em nossa base, você receberá as instruções em breve.' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Resetar senha com código de recuperação
+// Resetar senha com token do email
 router.post('/resetar-senha', async (req: any, res: Response) => {
   try {
-    const { usuario, email, novaSenha } = req.body;
+    const { token, novaSenha } = req.body;
 
-    if (!usuario || !email || !novaSenha) {
-      return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    if (!token || !novaSenha) {
+      return res.status(400).json({ error: 'Token e nova senha são obrigatórios' });
     }
 
     if (novaSenha.length < 6) {
       return res.status(400).json({ error: 'Senha deve ter no mínimo 6 caracteres' });
     }
 
-    const user = await UsuarioController.obterPorUsuario(usuario);
+    await UsuarioController.resetarSenhaComToken(token, novaSenha);
 
-    if (!user || (user as any).email !== email) {
-      return res.status(404).json({ error: 'Usuário ou email não encontrado' });
-    }
-
-    await UsuarioController.resetarSenha((user as any).id, novaSenha);
-
-    res.json({ mensagem: 'Senha resetada com sucesso' });
+    res.json({ mensagem: 'Senha redefinida com sucesso!' });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    const status = error.message.includes('inválido') ? 400 : 500;
+    res.status(status).json({ error: error.message });
   }
 });
 
