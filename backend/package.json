@@ -21,7 +21,6 @@
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.17.3",
     "mysql2": "^3.6.5",
-    "resend": "^6.12.3",
     "validator": "^13.11.0"
   },
   "devDependencies": {
