@@ -899,3 +899,198 @@ nav a:hover, nav button:hover {
     background: #333;
     color: var(--primary-white);
 }
+
+/* ======================================
+   TOAST NOTIFICATIONS
+   ====================================== */
+#smg-toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 380px;
+    width: calc(100% - 40px);
+    pointer-events: none;
+}
+
+.smg-toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateX(110%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: all;
+}
+
+.smg-toast.smg-toast-show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.smg-toast-success { background: #27ae60; border-left: 4px solid #1e8449; }
+.smg-toast-error   { background: #e74c3c; border-left: 4px solid #c0392b; }
+.smg-toast-warning { background: #e67e22; border-left: 4px solid #ca6f1e; }
+.smg-toast-info    { background: #2980b9; border-left: 4px solid #1f618d; }
+
+.smg-toast-icon {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.smg-toast-message { flex: 1; }
+
+.smg-toast-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 0 2px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+}
+
+.smg-toast-close:hover { opacity: 1; }
+
+/* Dialog overlay (confirm / prompt) */
+.smg-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.smg-dialog-overlay.smg-dialog-show { opacity: 1; }
+
+.smg-dialog {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.92);
+    transition: transform 0.2s ease;
+}
+
+.smg-dialog-overlay.smg-dialog-show .smg-dialog { transform: scale(1); }
+
+.smg-dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.smg-dialog-header h3 {
+    font-size: 18px;
+    color: #000;
+    margin: 0;
+}
+
+.smg-dialog-icon {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.smg-dialog-icon-warn { background: #e67e22; }
+.smg-dialog-icon-info { background: #2980b9; }
+
+.smg-dialog-message {
+    color: #444;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.smg-dialog-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.smg-dialog-input:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.smg-dialog-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.smg-dialog-cancel {
+    padding: 10px 22px;
+    background: #f5f5f5;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.smg-dialog-cancel:hover { background: #e0e0e0; color: #333; }
+
+.smg-dialog-confirm {
+    padding: 10px 22px;
+    background: #000;
+    border: 2px solid #000;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s;
+}
+
+.smg-dialog-confirm:hover { background: #333; }
+
+.smg-dialog-confirm-danger { background: #e74c3c; border-color: #e74c3c; }
+.smg-dialog-confirm-danger:hover { background: #c0392b; border-color: #c0392b; }
+
+@media (max-width: 480px) {
+    #smg-toast-container { top: auto; bottom: 20px; right: 10px; left: 10px; width: auto; max-width: 100%; }
+}

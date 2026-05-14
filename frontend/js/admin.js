@@ -218,7 +218,7 @@ async function criarProduto() {
             messageEl.textContent = mensagem;
             messageEl.className = 'form-message error';
         } else {
-            alert(mensagem);
+            SMGToast.show(mensagem, 'error');
         }
         return;
     }
@@ -252,11 +252,10 @@ async function criarProduto() {
 
         console.log('Produto criado com sucesso, recarregando...');
 
+        SMGToast.show('Produto criado com sucesso!', 'success');
         if (messageEl) {
             messageEl.textContent = 'Produto criado com sucesso!';
             messageEl.className = 'form-message success';
-        } else {
-            alert('Produto criado com sucesso!');
         }
 
         document.getElementById('novoProdutoForm').reset();
@@ -271,11 +270,10 @@ async function criarProduto() {
     } catch (error) {
         console.error('Erro na criação:', error);
         const msg = 'Erro: ' + error.message;
+        SMGToast.show(msg, 'error');
         if (messageEl) {
             messageEl.textContent = msg;
             messageEl.className = 'form-message error';
-        } else {
-            alert(msg);
         }
     }
 }
@@ -329,20 +327,19 @@ async function salvarEdicaoProduto() {
             throw new Error(data.error);
         }
 
-        alert('Produto atualizado com sucesso!');
+        SMGToast.show('Produto atualizado com sucesso!', 'success');
         document.getElementById('editarProdutoModal').classList.remove('active');
         await carregarProdutosAdmin();
         atualizarEstatisticas();
     } catch (error) {
-        alert('Erro: ' + error.message);
+        SMGToast.show('Erro: ' + error.message, 'error');
     }
 }
 
 // Deletar produto
 async function deletarProduto(produtoId) {
-    if (!confirm('Tem certeza que deseja deletar este produto?')) {
-        return;
-    }
+    const ok = await SMGToast.confirm('Tem certeza que deseja deletar este produto?', 'Deletar Produto');
+    if (!ok) return;
 
     try {
         const response = await fetch(`${API_URL}/produtos/${produtoId}`, {
@@ -356,11 +353,11 @@ async function deletarProduto(produtoId) {
             throw new Error(data.error);
         }
 
-        alert('Produto deletado com sucesso!');
+        SMGToast.show('Produto deletado com sucesso!', 'success');
         await carregarProdutosAdmin();
         atualizarEstatisticas();
     } catch (error) {
-        alert('Erro: ' + error.message);
+        SMGToast.show('Erro: ' + error.message, 'error');
     }
 }
 
@@ -512,15 +509,14 @@ async function salvarEdicaoUsuario() {
 // Deletar usuário
 async function deletarUsuario(usuarioId) {
     const usuario = usuariosAdmin.find(u => u.id === usuarioId);
-    
+
     if (!usuario || usuario.usuario === 'admin') {
-        alert('Não é possível deletar este usuário');
+        SMGToast.show('Não é possível deletar este usuário', 'error');
         return;
     }
 
-    if (!confirm(`Tem certeza que deseja deletar o usuário "${usuario.usuario}"?`)) {
-        return;
-    }
+    const ok = await SMGToast.confirm(`Tem certeza que deseja deletar o usuário "${usuario.usuario}"?`, 'Deletar Usuário');
+    if (!ok) return;
 
     try {
         const response = await fetch(`${API_URL}/usuarios/${usuarioId}`, {
@@ -534,9 +530,9 @@ async function deletarUsuario(usuarioId) {
             throw new Error(data.error);
         }
 
-        alert('Usuário deletado com sucesso!');
+        SMGToast.show('Usuário deletado com sucesso!', 'success');
         await carregarUsuariosAdmin();
     } catch (error) {
-        alert('Erro: ' + error.message);
+        SMGToast.show('Erro: ' + error.message, 'error');
     }
 }

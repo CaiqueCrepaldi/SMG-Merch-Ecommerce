@@ -122,13 +122,13 @@ function adicionarAoCarrinho(produto) {
     const tamanhoBtn = card.querySelector('.tamanho-btn.selected');
 
     if (!tamanhoBtn) {
-        alert('Selecione um tamanho!');
+        SMGToast.show('Selecione um tamanho!', 'warning');
         return;
     }
 
     const tamanho = tamanhoBtn.dataset.tamanho;
     if (produto.tamanhos[tamanho] <= 0) {
-        alert(`Tamanho ${tamanho} fora de estoque`);
+        SMGToast.show(`Tamanho ${tamanho} está fora de estoque`, 'warning');
         return;
     }
 
@@ -151,7 +151,7 @@ function adicionarAoCarrinho(produto) {
 
     salvarCarrinho();
     atualizarContadorCarrinho();
-    alert(`${produto.nome} (${tamanho}) adicionado ao carrinho!`);
+    SMGToast.show(`${produto.nome} (${tamanho}) adicionado ao carrinho!`, 'success');
 }
 
 // Atualizar contador do carrinho
@@ -288,22 +288,20 @@ function removerDoCarrinho(index) {
 // Finalizar compra
 async function finalizarCompra() {
     if (carrinho.length === 0) {
-        alert('Carrinho vazio!');
+        SMGToast.show('Seu carrinho está vazio!', 'warning');
         return;
     }
 
-    // Pedir CEP ao cliente
-    const cepInput = prompt('Por favor, digite seu CEP (8 dígitos):', '');
-    
+    const cepInput = await SMGToast.prompt('Digite seu CEP para calcular o frete:', 'Finalizar Compra', '00000-000');
+
     if (cepInput === null) {
-        // Usuário clicou em cancelar
         return;
     }
 
     const cepLimpo = cepInput.replace(/\D/g, '');
 
     if (cepLimpo.length !== 8) {
-        alert('CEP inválido! Digite 8 dígitos numerados.');
+        SMGToast.show('CEP inválido! Digite 8 dígitos.', 'error');
         return;
     }
 
@@ -327,7 +325,7 @@ async function finalizarCompra() {
         const dataFrete = await responseFrente.json();
 
         if (!dataFrete.sucesso) {
-            alert('Erro ao calcular frete: ' + (dataFrete.erro || 'CEP não encontrado'));
+            SMGToast.show('Erro ao calcular frete: ' + (dataFrete.erro || 'CEP não encontrado'), 'error');
             btnFinalizar.textContent = textOriginal;
             btnFinalizar.disabled = false;
             return;
@@ -355,7 +353,7 @@ async function finalizarCompra() {
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao calcular frete. Tente novamente.');
+        SMGToast.show('Erro ao calcular frete. Tente novamente.', 'error');
         btnFinalizar.textContent = textOriginal;
         btnFinalizar.disabled = false;
     }
@@ -504,15 +502,15 @@ async function finalizarCompraComFrete(cep, regiao, frete) {
     
     // Abrir WhatsApp
     window.open(url, '_blank');
-    
-    alert('✅ Sua compra foi enviada para o WhatsApp!\n\nAguarde um resposta da SMG Merch para confirmar seu pedido. Obrigado!');
+
+    SMGToast.show('Compra enviada para o WhatsApp! Aguarde a confirmação da SMG Merch. Obrigado!', 'success', 6000);
 }
 
 // Calcular frete com preços regionalizados dos Correios
 async function calcularFrete() {
     const cep = document.getElementById('cepFrete').value;
     if (!cep || cep.replace(/\D/g, '').length !== 8) {
-        alert('Por favor, insira um CEP válido com 8 dígitos.');
+        SMGToast.show('Por favor, insira um CEP válido com 8 dígitos.', 'warning');
         return;
     }
 
@@ -528,7 +526,7 @@ async function calcularFrete() {
         const data = await response.json();
 
         if (!data.sucesso) {
-            alert('Erro: ' + (data.erro || 'CEP não encontrado'));
+            SMGToast.show('Erro: ' + (data.erro || 'CEP não encontrado'), 'error');
             return;
         }
 
@@ -583,15 +581,14 @@ async function calcularFrete() {
         document.getElementById('resultadoFrete').style.display = 'block';
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao calcular frete. Tente novamente mais tarde.');
+        SMGToast.show('Erro ao calcular frete. Tente novamente mais tarde.', 'error');
     }
 }
 
 // Selecionar opção de frete
 function selecionarFrete(opcao) {
-    // Armazenar frete selecionado
     localStorage.setItem('frete_selecionado', JSON.stringify(opcao));
-    alert(`${opcao.tipo} selecionado! Prazo: ${opcao.diasEntrega} dia(s) - R$ ${opcao.preco.toFixed(2)}`);
+    SMGToast.show(`${opcao.tipo} selecionado! Prazo: ${opcao.diasEntrega} dia(s) — R$ ${opcao.preco.toFixed(2)}`, 'success');
 }
 
 // Carregar meus pedidos
@@ -634,7 +631,7 @@ async function carregarMeusPedidos() {
 
         modal.classList.add('active');
     } catch (error) {
-        alert('Erro: ' + error.message);
+        SMGToast.show('Erro ao carregar pedidos: ' + error.message, 'error');
     }
 }
 
