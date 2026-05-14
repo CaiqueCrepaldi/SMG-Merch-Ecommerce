@@ -24,7 +24,9 @@ services:
         generateValue: true
       - key: CORS_ORIGIN
         sync: false
-      - key: BREVO_API_KEY
+      - key: MAILJET_API_KEY
+        sync: false
+      - key: MAILJET_SECRET_KEY
         sync: false
       - key: APP_URL
         sync: false

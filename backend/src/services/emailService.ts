@@ -6,17 +6,22 @@ export async function enviarEmailRecuperacao(
   const appUrl = process.env.APP_URL || 'http://localhost:3000';
   const resetUrl = `${appUrl}/reset-senha?token=${token}`;
 
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+  const mjApiKey = process.env.MAILJET_API_KEY || '';
+  const mjSecretKey = process.env.MAILJET_SECRET_KEY || '';
+  const credentials = Buffer.from(`${mjApiKey}:${mjSecretKey}`).toString('base64');
+
+  const response = await fetch('https://api.mailjet.com/v3.1/send', {
     method: 'POST',
     headers: {
-      'api-key': process.env.BREVO_API_KEY || '',
+      'Authorization': `Basic ${credentials}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      sender: { name: 'SMG Merch', email: 'smgmerchandising@gmail.com' },
-      to: [{ email }],
-      subject: 'Recuperação de Senha - SMG Merch',
-      htmlContent: `
+      Messages: [{
+        From: { Name: 'SMG Merch', Email: 'smgmerchandising@gmail.com' },
+        To: [{ Email: email }],
+        Subject: 'Recuperação de Senha - SMG Merch',
+        HTMLPart: `
         <!DOCTYPE html>
         <html lang="pt-BR">
         <head>
@@ -60,11 +65,12 @@ export async function enviarEmailRecuperacao(
         </body>
         </html>
       `
+      }]
     })
   });
 
   if (!response.ok) {
     const erro = await response.json() as any;
-    throw new Error(`Falha ao enviar email: ${erro.message || response.status}`);
+    throw new Error(`Falha ao enviar email: ${JSON.stringify(erro)}`);
   }
 }
