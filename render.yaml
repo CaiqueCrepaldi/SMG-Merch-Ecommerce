@@ -24,3 +24,9 @@ services:
         generateValue: true
       - key: CORS_ORIGIN
         sync: false
+      - key: SMTP_EMAIL
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: APP_URL
+        sync: false

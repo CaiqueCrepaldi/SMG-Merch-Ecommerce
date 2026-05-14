@@ -1,12 +1,19 @@
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.SMTP_EMAIL,
-    pass: process.env.SMTP_PASSWORD
-  }
-});
+function criarTransporter() {
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
+  });
+}
 
 export async function enviarEmailRecuperacao(
   email: string,
@@ -15,6 +22,7 @@ export async function enviarEmailRecuperacao(
 ): Promise<void> {
   const appUrl = process.env.APP_URL || 'http://localhost:3000';
   const resetUrl = `${appUrl}/reset-senha?token=${token}`;
+  const transporter = criarTransporter();
 
   await transporter.sendMail({
     from: `"SMG Merch" <${process.env.SMTP_EMAIL}>`,
