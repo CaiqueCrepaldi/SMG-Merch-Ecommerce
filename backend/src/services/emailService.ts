@@ -1,32 +1,16 @@
-import nodemailer from 'nodemailer';
-
-function criarTransporter() {
-  return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD
-    },
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 20000
-  });
-}
+import { Resend } from 'resend';
 
 export async function enviarEmailRecuperacao(
   email: string,
   nomeUsuario: string,
   token: string
 ): Promise<void> {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const appUrl = process.env.APP_URL || 'http://localhost:3000';
   const resetUrl = `${appUrl}/reset-senha?token=${token}`;
-  const transporter = criarTransporter();
 
-  await transporter.sendMail({
-    from: `"SMG Merch" <${process.env.SMTP_EMAIL}>`,
+  const { error } = await resend.emails.send({
+    from: 'SMG Merch <onboarding@resend.dev>',
     to: email,
     subject: 'Recuperação de Senha - SMG Merch',
     html: `
@@ -74,4 +58,8 @@ export async function enviarEmailRecuperacao(
       </html>
     `
   });
+
+  if (error) {
+    throw new Error(`Falha ao enviar email: ${error.message}`);
+  }
 }
