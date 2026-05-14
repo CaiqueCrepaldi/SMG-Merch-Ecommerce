@@ -1,0 +1,4 @@
+frontend/*.html linguist-vendored
+frontend/**/*.html linguist-vendored
+frontend/css/*.css linguist-vendored
+frontend/**/*.css linguist-vendored
