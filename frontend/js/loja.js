@@ -4,6 +4,12 @@
 
 const API_URL = window.location.origin + '/api';
 
+function mascaraCEP(valor) {
+    return valor.replace(/\D/g, '')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .substring(0, 9);
+}
+
 let carrinho = [];
 let produtosDisponiveis = [];
 let usuarioAtual = null;
@@ -215,6 +221,14 @@ function configurarEventos() {
         const calcularFreteSubmit = document.getElementById('calcularFreteSubmit');
         calcularFreteSubmit.addEventListener('click', calcularFrete);
     });
+
+    // Máscara CEP
+    const campoCEP = document.getElementById('cepFrete');
+    if (campoCEP) {
+        campoCEP.addEventListener('input', (e) => {
+            e.target.value = mascaraCEP(e.target.value);
+        });
+    }
 }
 
 // Abrir modal carrinho

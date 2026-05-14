@@ -4,6 +4,13 @@
 
 const API_URL = window.location.origin + '/api';
 
+function formatarCPF(cpf) {
+    if (!cpf) return '-';
+    const limpo = cpf.replace(/\D/g, '');
+    if (limpo.length !== 11) return cpf;
+    return limpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
 let usuarioAtual = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -39,7 +46,7 @@ async function carregarDadosUsuario() {
 
         // Preencher os dados
         document.getElementById('usuarioDisplay').textContent = data.usuario || '-';
-        document.getElementById('cpfDisplay').textContent = data.cpf || '-';
+        document.getElementById('cpfDisplay').textContent = formatarCPF(data.cpf);
         document.getElementById('emailDisplay').textContent = data.email || '-';
         document.getElementById('novoEmail').value = data.email || '';
         

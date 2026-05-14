@@ -4,7 +4,21 @@
 
 const API_URL = window.location.origin + '/api';
 
+function mascaraCPF(valor) {
+    return valor.replace(/\D/g, '')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+        .substring(0, 14);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+    const campoCPF = document.getElementById('registroCPF');
+    if (campoCPF) {
+        campoCPF.addEventListener('input', (e) => {
+            e.target.value = mascaraCPF(e.target.value);
+        });
+    }
     // Verificar se já está autenticado (apenas para redirecionar se for admin)
     try {
         const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/status`, {
