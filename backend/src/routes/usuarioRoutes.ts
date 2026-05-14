@@ -1,4 +1,4 @@
-import express, { Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { UsuarioController } from '../controllers/usuarioController';
 import { AuthRequest, authMiddleware, adminMiddleware } from '../middleware/auth';
 
@@ -182,11 +182,10 @@ router.post('/recuperar-senha', async (req: any, res: Response) => {
       return res.status(404).json({ error: 'Usuário ou email não encontrado' });
     }
 
-    // Em produção, enviar email com link contendo o token
-    // Por agora, retornar o código (apenas para desenvolvimento)
-    res.json({ 
-      mensagem: 'Se o usuário e email existem, instruções foram enviadas',
-      codigoRecuperacao: recuperacao.codigoRecuperacao // Remover em produção
+    // Em produção: enviar email com link contendo o token
+    // O código de recuperação não deve ser retornado na resposta
+    res.json({
+      mensagem: 'Se o usuário e email existem, instruções foram enviadas'
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });

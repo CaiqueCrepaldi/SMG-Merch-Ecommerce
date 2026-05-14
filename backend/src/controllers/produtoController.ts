@@ -112,20 +112,15 @@ export class ProdutoController {
 
   // Atualizar estoque
   static async atualizarEstoque(id: number, tamanho: string, quantidade: number) {
-    const connection = await pool.getConnection();
-    try {
-      const produto = await this.obterPorId(id);
-      if (!produto) return false;
+    const produto = await this.obterPorId(id);
+    if (!produto) return false;
 
-      const tamanhos = produto.tamanhos;
-      if (tamanho in tamanhos) {
-        tamanhos[tamanho] -= quantidade;
-        await this.atualizar(id, undefined, undefined, undefined, tamanhos);
-        return true;
-      }
-      return false;
-    } finally {
-      connection.release();
+    const tamanhos = produto.tamanhos;
+    if (tamanho in tamanhos) {
+      tamanhos[tamanho] -= quantidade;
+      await this.atualizar(id, undefined, undefined, undefined, tamanhos);
+      return true;
     }
+    return false;
   }
 }

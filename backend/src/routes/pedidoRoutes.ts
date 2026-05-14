@@ -1,4 +1,4 @@
-import express, { Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { PedidoController } from '../controllers/pedidoController';
 import { ProdutoController } from '../controllers/produtoController';
 import { authMiddleware, adminMiddleware, AuthRequest } from '../middleware/auth';

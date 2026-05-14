@@ -1,5 +1,33 @@
+# Dependências
 node_modules/
+backend/node_modules/
+
+# Build TypeScript
 dist/
+backend/dist/
+
+# Variáveis de ambiente - NUNCA commitar estes arquivos
 .env
-.DS_Store
+backend/.env
+*.env
+!*.env.example
+
+# Logs
 *.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Arquivos de teste com dados sensíveis
+database.sql
+database_corrected.sql
+gerador_senha.js

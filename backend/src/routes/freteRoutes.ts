@@ -1,4 +1,4 @@
-import express, { Response, Router } from 'express';
+import { Response, Router } from 'express';
 import FreteController from '../controllers/freteController';
 
 const router = Router();

@@ -1,65 +1,58 @@
 #!/bin/bash
 
-# SMG Merch - Script de Instalação e Execução
-# Este script configura e inicia o projeto
+# SMG Merch - Script de Instalacao e Execucao
 
 echo "=================================="
 echo "SMG MERCH - LOJA ONLINE"
 echo "=================================="
 echo ""
 
-# Verificar Node.js
 if ! command -v node &> /dev/null; then
-    echo "❌ Node.js não está instalado!"
-    echo "Instale de: https://nodejs.org/"
+    echo "ERRO: Node.js nao esta instalado. Instale de: https://nodejs.org/"
     exit 1
 fi
 
-echo "✅ Node.js encontrado: $(node --version)"
+echo "OK: Node.js $(node --version)"
 
-# Verificar npm
 if ! command -v npm &> /dev/null; then
-    echo "❌ npm não está instalado!"
+    echo "ERRO: npm nao encontrado."
     exit 1
 fi
 
-echo "✅ npm encontrado: $(npm --version)"
-echo ""
+# Verificar arquivo .env
+if [ ! -f "backend/.env" ]; then
+    echo "ATENCAO: backend/.env nao encontrado!"
+    echo "Copie backend/.env.example para backend/.env e configure as variaveis."
+    exit 1
+fi
 
-# Instalar dependências
-echo "📦 Instalando dependências..."
-npm install
+# Instalar dependencias do backend
+echo "Instalando dependencias do backend..."
+cd backend && npm install
 
 if [ $? -ne 0 ]; then
-    echo "❌ Erro ao instalar dependências"
+    echo "ERRO: Falha ao instalar dependencias"
     exit 1
 fi
 
-echo "✅ Dependências instaladas com sucesso"
+echo "OK: Dependencias instaladas"
 echo ""
 
 # Compilar TypeScript
-echo "🔨 Compilando TypeScript..."
+echo "Compilando TypeScript..."
 npm run build
 
 if [ $? -ne 0 ]; then
-    echo "❌ Erro ao compilar TypeScript"
+    echo "ERRO: Falha ao compilar TypeScript"
     exit 1
 fi
 
-echo "✅ TypeScript compilado com sucesso"
+echo "OK: TypeScript compilado"
 echo ""
 
 # Iniciar servidor
-echo "🚀 Iniciando servidor SMG Merch..."
-echo ""
 echo "=================================="
-echo "Servidor rodando em:"
-echo "🌐 http://localhost:3000"
-echo ""
-echo "Credenciais de teste:"
-echo "👤 Usuário: admin"
-echo "🔑 Senha: 12345678"
+echo "Servidor: http://localhost:3000"
 echo "=================================="
 echo ""
 
